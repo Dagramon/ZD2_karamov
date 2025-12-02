@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
 
         val discussionButton = findViewById<LinearLayout>(R.id.discussionButton)
         val moviesButton = findViewById<LinearLayout>(R.id.moviesButton)
+        val favMoviesButton = findViewById<LinearLayout>(R.id.favMoviesButton)
 
         discussionButton.setOnClickListener{
             val intent = Intent(this@MainActivity, DiscussionsActivity::class.java)
@@ -20,6 +21,11 @@ class MainActivity : AppCompatActivity() {
         }
         moviesButton.setOnClickListener {
             val intent = Intent(this@MainActivity, MoviesActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        favMoviesButton.setOnClickListener {
+            val intent = Intent(this@MainActivity, FavoriteMoviesActivity::class.java)
             startActivity(intent)
             finish()
         }

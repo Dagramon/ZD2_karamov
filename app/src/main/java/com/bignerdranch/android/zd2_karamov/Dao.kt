@@ -14,4 +14,6 @@ interface Dao {
     fun getAllItems() : Flow<List<Movie>>
     @Delete
     fun delete(item : Movie)
+    @Query("DELETE FROM Movies")
+    fun clearAllItems()
 }

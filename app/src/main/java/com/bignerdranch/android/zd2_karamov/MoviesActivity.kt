@@ -1,8 +1,7 @@
 package com.bignerdranch.android.zd2_karamov
 
 import android.content.Intent
-import android.graphics.drawable.Drawable
-import android.media.Image
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,13 +10,11 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import com.bignerdranch.android.zd2_karamov.databinding.ActivityMainBinding
 import com.squareup.picasso.Picasso
 import org.json.JSONObject
 
@@ -26,20 +23,19 @@ const val API_KEY = "5d7eec32"
 val titlesList = arrayOf(
     "The Witcher",
     "Magicians",
+    "Batman",
+    "Star Wars",
+    "Suicide Squad",
+    "Interstellar"
 )
 
 var movieList = mutableListOf<Movie>()
 
 class MoviesActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityMainBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movies)
-
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         val moviesRecyclerView = findViewById<RecyclerView>(R.id.moviesRecyclerView)
 
@@ -52,10 +48,10 @@ class MoviesActivity : AppCompatActivity() {
             finish()
 
         }
-
-        for (i in 0..titlesList.size)
+        movieList.clear()
+        for (i in 0..titlesList.size-1)
         {
-            RequestMovie(titlesList[i])
+            requestMovie(titlesList[i])
         }
 
         moviesRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -78,6 +74,11 @@ class MoviesActivity : AppCompatActivity() {
                     {
                         movieList[position].favorite = false
                         favButton.setBackgroundResource(R.drawable.heart)
+                        val item = movieList[position]
+                        val db = MainDB.getDb(this@MoviesActivity)
+                        Thread{
+                            db.getDao().delete(item)
+                        }.start()
                     }
                     else
                     {
@@ -95,6 +96,7 @@ class MoviesActivity : AppCompatActivity() {
                 Picasso
                     .get()
                     .load(movieList[position].image)
+                    .fit()
                     .into(imageView)
 
             }
@@ -105,7 +107,7 @@ class MoviesActivity : AppCompatActivity() {
         moviesRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
-    private fun RequestMovie(title : String)
+    private fun requestMovie(title : String)
     {
         val url = "https://www.omdbapi.com/?apikey=$API_KEY&type=movie&s=$title"
 
@@ -114,7 +116,7 @@ class MoviesActivity : AppCompatActivity() {
             Request.Method.GET,
             url,
             {
-                result -> ParseMovieData(result)
+                result -> parseMovieData(result)
             },
             {
                 error -> Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show()
@@ -122,12 +124,12 @@ class MoviesActivity : AppCompatActivity() {
         )
         queue.add(request)
     }
-    private fun ParseMovieData(result : String) {
+    private fun parseMovieData(result : String) {
         val mainObject = JSONObject(result)
         val item = Movie(
             null,
-            mainObject.getJSONObject("Search").getString("Title"),
-            mainObject.getJSONObject("Search").getString("Poster"),
+            mainObject.getJSONArray("Search").getJSONObject(0).getString("Title"),
+            mainObject.getJSONArray("Search").getJSONObject(0).getString("Poster"),
             favorite = false
         )
         movieList.add(item)

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -27,6 +28,7 @@ class FavoriteMoviesActivity : AppCompatActivity() {
         val backText = findViewById<TextView>(R.id.label3)
         val db = MainDB.getDb(this@FavoriteMoviesActivity)
 
+        favoriteMovieList.clear()
         db.getDao().getAllItems().asLiveData().observe(this){
 
             it.forEach {
@@ -34,6 +36,7 @@ class FavoriteMoviesActivity : AppCompatActivity() {
             }
 
         }
+        Toast.makeText(this, favoriteMovieList.size.toString(), Toast.LENGTH_LONG).show()
 
         backText.setOnClickListener {
 
@@ -57,6 +60,8 @@ class FavoriteMoviesActivity : AppCompatActivity() {
                 val textView = holder.itemView.findViewById<TextView>(R.id.movieLabel)
                 val imageView = holder.itemView.findViewById<ImageView>(R.id.movieImage)
                 val favButton = holder.itemView.findViewById<ImageButton>(R.id.favoriteButton)
+
+                favButton.setBackgroundResource(R.drawable.heart_clicked)
 
                 favButton.setOnClickListener {
                     if (favoriteMovieList[position].favorite)
@@ -83,6 +88,7 @@ class FavoriteMoviesActivity : AppCompatActivity() {
                 Picasso
                     .get()
                     .load(favoriteMovieList[position].image)
+                    .fit()
                     .into(imageView)
 
             }
