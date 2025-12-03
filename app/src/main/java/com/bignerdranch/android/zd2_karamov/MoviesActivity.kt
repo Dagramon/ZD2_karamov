@@ -55,6 +55,7 @@ class MoviesActivity : AppCompatActivity() {
         {
             requestMovie(titlesList[i])
         }
+        Toast.makeText(this, "Загрзка", Toast.LENGTH_LONG).show()
         Thread.sleep(1000)
         moviesRecyclerView.layoutManager = LinearLayoutManager(this)
         moviesRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -32,7 +32,7 @@ class FavoriteMoviesActivity : AppCompatActivity() {
 
             favoriteMovieList.clear()
             it.forEach {
-                favoriteMovieList.add(Movie(null, label = it.label, image = it.image, favorite = it.favorite))
+                favoriteMovieList.add(Movie(it.id, label = it.label, image = it.image, favorite = it.favorite))
             }
 
             favMoviesRecyclerView.layoutManager = LinearLayoutManager(this)
