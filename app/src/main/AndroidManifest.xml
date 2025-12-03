@@ -18,23 +18,23 @@
 
         <activity
             android:name=".FavoriteMoviesActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".MoviesActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".DiscussionsActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".LoginActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".LoadingActivity"

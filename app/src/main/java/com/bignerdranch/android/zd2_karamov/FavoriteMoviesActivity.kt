@@ -26,17 +26,16 @@ class FavoriteMoviesActivity : AppCompatActivity() {
 
         val favMoviesRecyclerView = findViewById<RecyclerView>(R.id.favMoviesRecyclerView)
         val backText = findViewById<TextView>(R.id.label3)
-        val db = MainDB.getDb(this@FavoriteMoviesActivity)
+        val db = MainDB.getDb(this.applicationContext)
 
-        favoriteMovieList.clear()
         db.getDao().getAllItems().asLiveData().observe(this){
 
             it.forEach {
                 favoriteMovieList.add(Movie(null, label = it.label, image = it.image, favorite = it.favorite))
             }
+            Toast.makeText(this, favoriteMovieList.size.toString(), Toast.LENGTH_SHORT).show()
 
         }
-        Toast.makeText(this, favoriteMovieList.size.toString(), Toast.LENGTH_LONG).show()
 
         backText.setOnClickListener {
 
@@ -96,6 +95,7 @@ class FavoriteMoviesActivity : AppCompatActivity() {
             override fun getItemCount() = favoriteMovieList.size
 
         }
+
         favMoviesRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 

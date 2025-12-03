@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database (entities = [Movie::class], version = 1)
+@Database (entities = [Movie::class], version = 2)
 abstract class MainDB : RoomDatabase() {
     abstract fun getDao() : Dao
     companion object{
@@ -14,7 +14,7 @@ abstract class MainDB : RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 MainDB::class.java,
-                "fav.db"
+                "test.db"
             ).build()
         }
     }

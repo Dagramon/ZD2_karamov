@@ -85,7 +85,7 @@ class MoviesActivity : AppCompatActivity() {
                         movieList[position].favorite = true
                         favButton.setBackgroundResource(R.drawable.heart_clicked)
                         val item = movieList[position]
-                        val db = MainDB.getDb(this@MoviesActivity)
+                        val db = MainDB.getDb(applicationContext)
                         Thread{
                             db.getDao().insertItem(item)
                         }.start()
