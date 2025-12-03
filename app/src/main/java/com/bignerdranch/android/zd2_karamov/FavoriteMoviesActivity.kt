@@ -30,10 +30,62 @@ class FavoriteMoviesActivity : AppCompatActivity() {
 
         db.getDao().getAllItems().asLiveData().observe(this){
 
+            favoriteMovieList.clear()
             it.forEach {
                 favoriteMovieList.add(Movie(null, label = it.label, image = it.image, favorite = it.favorite))
             }
-            Toast.makeText(this, favoriteMovieList.size.toString(), Toast.LENGTH_SHORT).show()
+
+            favMoviesRecyclerView.layoutManager = LinearLayoutManager(this)
+            favMoviesRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+                override fun onCreateViewHolder(
+                    parent: ViewGroup,
+                    viewType: Int,
+                ): RecyclerView.ViewHolder {
+                    val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+                    return object : RecyclerView.ViewHolder(view) {}
+                }
+
+                override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+                    val textView = holder.itemView.findViewById<TextView>(R.id.movieLabel)
+                    val imageView = holder.itemView.findViewById<ImageView>(R.id.movieImage)
+                    val favButton = holder.itemView.findViewById<ImageButton>(R.id.favoriteButton)
+
+                    favButton.setBackgroundResource(R.drawable.heart_clicked)
+
+                    favButton.setOnClickListener {
+                        if (favoriteMovieList[position].favorite)
+                        {
+                            favoriteMovieList[position].favorite = false
+                            favButton.setBackgroundResource(R.drawable.heart)
+                            val item = favoriteMovieList[position]
+                            Thread{
+                                db.getDao().delete(item)
+                            }.start()
+                        }
+                        else
+                        {
+                            favoriteMovieList[position].favorite = true
+                            favButton.setBackgroundResource(R.drawable.heart_clicked)
+                            val item = favoriteMovieList[position]
+                            Thread{
+                                db.getDao().insertItem(item)
+                            }.start()
+                        }
+                    }
+
+                    textView.text = favoriteMovieList[position].label
+                    Picasso
+                        .get()
+                        .load(favoriteMovieList[position].image)
+                        .fit()
+                        .into(imageView)
+
+                }
+
+                override fun getItemCount() = favoriteMovieList.size
+
+            }
 
         }
 
@@ -45,58 +97,6 @@ class FavoriteMoviesActivity : AppCompatActivity() {
 
         }
 
-        favMoviesRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-            override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int,
-            ): RecyclerView.ViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
-                return object : RecyclerView.ViewHolder(view) {}
-            }
-
-            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-                val textView = holder.itemView.findViewById<TextView>(R.id.movieLabel)
-                val imageView = holder.itemView.findViewById<ImageView>(R.id.movieImage)
-                val favButton = holder.itemView.findViewById<ImageButton>(R.id.favoriteButton)
-
-                favButton.setBackgroundResource(R.drawable.heart_clicked)
-
-                favButton.setOnClickListener {
-                    if (favoriteMovieList[position].favorite)
-                    {
-                        favoriteMovieList[position].favorite = false
-                        favButton.setBackgroundResource(R.drawable.heart)
-                        val item = favoriteMovieList[position]
-                        Thread{
-                            db.getDao().delete(item)
-                        }.start()
-                    }
-                    else
-                    {
-                        favoriteMovieList[position].favorite = true
-                        favButton.setBackgroundResource(R.drawable.heart_clicked)
-                        val item = favoriteMovieList[position]
-                        Thread{
-                            db.getDao().insertItem(item)
-                        }.start()
-                    }
-                }
-
-                textView.text = favoriteMovieList[position].label
-                Picasso
-                    .get()
-                    .load(favoriteMovieList[position].image)
-                    .fit()
-                    .into(imageView)
-
-            }
-
-            override fun getItemCount() = favoriteMovieList.size
-
-        }
-
-        favMoviesRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
 }

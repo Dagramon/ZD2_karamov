@@ -16,7 +16,9 @@ import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.delay
 import org.json.JSONObject
+import kotlin.concurrent.thread
 
 const val API_KEY = "5d7eec32"
 
@@ -53,7 +55,8 @@ class MoviesActivity : AppCompatActivity() {
         {
             requestMovie(titlesList[i])
         }
-
+        Thread.sleep(1000)
+        moviesRecyclerView.layoutManager = LinearLayoutManager(this)
         moviesRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
             override fun onCreateViewHolder(
@@ -104,7 +107,6 @@ class MoviesActivity : AppCompatActivity() {
             override fun getItemCount() = movieList.size
 
         }
-        moviesRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     private fun requestMovie(title : String)
