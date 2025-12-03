@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="discussion">Обсуждения</string>
+    <string name="favorite">Избранные</string>
+    <string name="e_mail">E-mail</string>
+    <string name="you_example_com">you@example.com</string>
+    <string name="password">Пароль</string>
+    <string name="you_password">Ваш пароль</string>
+    <string name="enter">Войти</string>
+</resources>

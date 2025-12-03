@@ -16,7 +16,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Избранные"
+        android:text="@string/favorite"
         android:textStyle="bold"
         android:textColor="@color/blue"/>
     <ScrollView

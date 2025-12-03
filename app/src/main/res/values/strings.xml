@@ -42,4 +42,11 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="discussion">Обсуждения</string>
+    <string name="favorite">Избранные</string>
+    <string name="e_mail">E-mail</string>
+    <string name="you_example_com">you@example.com</string>
+    <string name="password">Пароль</string>
+    <string name="you_password">Ваш пароль</string>
+    <string name="enter">Войти</string>
 </resources>

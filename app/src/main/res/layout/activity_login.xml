@@ -27,7 +27,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="E-mail"
+            android:text="@string/e_mail"
             android:textSize="11sp"
             android:textColor="@color/blue"
             />
@@ -37,13 +37,13 @@
             android:textSize="11sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="you@example.com"
+            android:hint="@string/you_example_com"
             android:backgroundTint="@color/blue"
             />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Пароль"
+            android:text="@string/password"
             android:textSize="11sp"
             android:textColor="@color/blue"
             />
@@ -54,7 +54,7 @@
             android:textSize="11sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ваш пароль"
+            android:hint="@string/you_password"
             android:backgroundTint="@color/blue"
             tools:ignore="WearPasswordInput" />
 
@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@color/blue"
-        android:text="Войти"
+        android:text="@string/enter"
         android:textStyle="bold"
         android:textAllCaps="false"
         />
