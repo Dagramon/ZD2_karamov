@@ -9,7 +9,7 @@ data class Movie(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null,
     @ColumnInfo(name = "title")
-    val label : String,
+    val title : String,
     @ColumnInfo(name = "image")
     val image : String,
     @ColumnInfo(name = "favorite")

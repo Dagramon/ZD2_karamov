@@ -32,7 +32,7 @@ class FavoriteMoviesActivity : AppCompatActivity() {
 
             favoriteMovieList.clear()
             it.forEach {
-                favoriteMovieList.add(Movie(it.id, label = it.label, image = it.image, favorite = it.favorite))
+                favoriteMovieList.add(Movie(it.id, title = it.title, image = it.image, favorite = it.favorite))
             }
 
             favMoviesRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -74,7 +74,7 @@ class FavoriteMoviesActivity : AppCompatActivity() {
                         }
                     }
 
-                    textView.text = favoriteMovieList[position].label
+                    textView.text = favoriteMovieList[position].title
                     Picasso
                         .get()
                         .load(favoriteMovieList[position].image)

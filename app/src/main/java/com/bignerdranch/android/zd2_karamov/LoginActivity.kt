@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -50,11 +51,7 @@ class LoginActivity : AppCompatActivity() {
             }
             else
             {
-                Toast.makeText(
-                    this,
-                    "Неверный ввод почты или пароля",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Snackbar.make(findViewById(R.id.buttonEnter), "Неверная почта или пароль", Snackbar.LENGTH_SHORT).show()
             }
         }
 

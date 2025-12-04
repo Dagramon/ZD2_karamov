@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.delay
 import org.json.JSONObject
@@ -33,13 +34,12 @@ val titlesList = arrayOf(
 
 var movieList = mutableListOf<Movie>()
 
+
 class MoviesActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movies)
-
-        val moviesRecyclerView = findViewById<RecyclerView>(R.id.moviesRecyclerView)
 
         val backText = findViewById<TextView>(R.id.label2)
 
@@ -50,13 +50,19 @@ class MoviesActivity : AppCompatActivity() {
             finish()
 
         }
+
         movieList.clear()
         for (i in 0..titlesList.size-1)
         {
             requestMovie(titlesList[i])
         }
-        Toast.makeText(this, "Загрзка", Toast.LENGTH_LONG).show()
         Thread.sleep(1000)
+        initRecyclerView()
+    }
+    private fun initRecyclerView()
+    {
+        val moviesRecyclerView = findViewById<RecyclerView>(R.id.moviesRecyclerView)
+
         moviesRecyclerView.layoutManager = LinearLayoutManager(this)
         moviesRecyclerView.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -73,30 +79,24 @@ class MoviesActivity : AppCompatActivity() {
                 val imageView = holder.itemView.findViewById<ImageView>(R.id.movieImage)
                 val favButton = holder.itemView.findViewById<ImageButton>(R.id.favoriteButton)
 
-                favButton.setOnClickListener {
-                    if (movieList[position].favorite)
-                    {
-                        movieList[position].favorite = false
-                        favButton.setBackgroundResource(R.drawable.heart)
-                        val item = movieList[position]
-                        val db = MainDB.getDb(this@MoviesActivity)
-                        Thread{
-                            db.getDao().delete(item)
-                        }.start()
-                    }
-                    else
-                    {
-                        movieList[position].favorite = true
-                        favButton.setBackgroundResource(R.drawable.heart_clicked)
-                        val item = movieList[position]
-                        val db = MainDB.getDb(applicationContext)
-                        Thread{
-                            db.getDao().insertItem(item)
-                        }.start()
-                    }
+                if (movieList[position].favorite)
+                {
+                    favButton.isEnabled = false
+                    favButton.setBackgroundResource(R.drawable.heart_clicked)
                 }
 
-                textView.text = movieList[position].label
+                favButton.setOnClickListener {
+                    favButton.isEnabled = false
+                    movieList[position].favorite = true
+                    favButton.setBackgroundResource(R.drawable.heart_clicked)
+                    val item = movieList[position]
+                    val db = MainDB.getDb(applicationContext)
+                    Thread{
+                        db.getDao().insertItem(item)
+                    }.start()
+                }
+
+                textView.text = movieList[position].title
                 Picasso
                     .get()
                     .load(movieList[position].image)
@@ -109,6 +109,7 @@ class MoviesActivity : AppCompatActivity() {
 
         }
     }
+
 
     private fun requestMovie(title : String)
     {
@@ -135,6 +136,13 @@ class MoviesActivity : AppCompatActivity() {
             mainObject.getJSONArray("Search").getJSONObject(0).getString("Poster"),
             favorite = false
         )
-        movieList.add(item)
+        val db = MainDB.getDb(this@MoviesActivity)
+        Thread {
+            if (db.getDao().movieisFav(item.title))
+            {
+                item.favorite = true
+            }
+            movieList.add(item)
+        }.start()
     }
 }

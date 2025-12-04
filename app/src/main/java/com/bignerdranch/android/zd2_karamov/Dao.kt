@@ -14,6 +14,8 @@ interface Dao {
     fun insertItem(item : Movie)
     @Query("SELECT * FROM Movies")
     fun getAllItems() : Flow<List<Movie>>
+    @Query("SELECT EXISTS(SELECT 1 FROM Movies WHERE title = :senttitle LIMIT 1)")
+    fun movieisFav(senttitle : String): Boolean
     @Delete
     fun delete(item : Movie)
     @Update
